@@ -7,9 +7,6 @@ use Illuminate\Support\Facades\File;
 
 class FileGenerator
 {
-
-    public function __construct(protected BindingService $bindingService) {}
-
     public function generateFiles($name, $serviceNamespace, $repositoryNamespace, $generateInterface)
     {
         // Define the paths
@@ -51,7 +48,7 @@ class FileGenerator
             file_put_contents($interfacePath, $interfaceContent);
 
             // Bind the interface to the repository in AppServiceProvider
-            $this->bindingService->bindInterfaceToRepository($name, $repositoryNamespace);
+            $this->bindInterfaceToRepository($name, $repositoryNamespace);
         }
 
         // Ensure directories exist before creating files
@@ -90,6 +87,41 @@ class FileGenerator
         if (!File::exists($directoryPath)) {
             // Create the directory and any missing parent directories (0755 is a common permission setting)
             File::makeDirectory($directoryPath, 0755, true);
+        }
+    }
+
+    private function bindInterfaceToRepository($name, $repositoryNamespace)
+    {
+        $appServiceProviderPath = app_path('Providers/AppServiceProvider.php');
+
+        if (!File::exists($appServiceProviderPath)) {
+            return;
+        }
+
+        // Read the content of AppServiceProvider
+        $appServiceProviderContent = file_get_contents($appServiceProviderPath);
+
+        // Define the binding line
+        $bindingLine = "        \$this->app->bind({$repositoryNamespace}\\{$name}RepositoryInterface::class, {$repositoryNamespace}\\{$name}Repository::class);";
+
+        // Check if the binding already exists
+        if (Str::contains($appServiceProviderContent, $bindingLine)) {
+            return; // No need to bind if it's already present
+        }
+
+        // Find the position to insert the binding inside the register() method
+        $registerMethodPosition = strpos($appServiceProviderContent, 'public function register()');
+
+        if ($registerMethodPosition !== false) {
+            $registerMethodPosition = strpos($appServiceProviderContent, '{', $registerMethodPosition) + 1;
+            $beforeCode = substr($appServiceProviderContent, 0, $registerMethodPosition);
+            $afterCode = substr($appServiceProviderContent, $registerMethodPosition);
+
+            // Insert the binding line inside the register method
+            $appServiceProviderContent = $beforeCode . PHP_EOL . $bindingLine . PHP_EOL . $afterCode;
+
+            // Write the updated content back to AppServiceProvider.php
+            file_put_contents($appServiceProviderPath, $appServiceProviderContent);
         }
     }
 }
