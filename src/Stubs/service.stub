@@ -1,0 +1,13 @@
+<?php
+
+namespace {{ namespace }};
+
+class {{ className }}
+{
+    protected $repository;
+
+    public function __construct({{ className }}Repository $repository)
+    {
+        $this->repository = $repository;
+    }
+}
