@@ -103,7 +103,7 @@ class FileGenerator
         $appServiceProviderContent = file_get_contents($appServiceProviderPath);
 
         // Define the binding line
-        $bindingLine = "        \$this->app->bind({$repositoryNamespace}\\{$name}RepositoryInterface::class, {$repositoryNamespace}\\{$name}Repository::class);";
+        $bindingLine = "        \$this->app->bind(\\{$repositoryNamespace}\\{$name}RepositoryInterface::class, \\{$repositoryNamespace}\\{$name}Repository::class);";
 
         // Check if the binding already exists
         if (Str::contains($appServiceProviderContent, $bindingLine)) {
