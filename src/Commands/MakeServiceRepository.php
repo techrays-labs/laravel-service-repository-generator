@@ -18,7 +18,7 @@ class MakeServiceRepository extends Command
     {
         $name = $this->argument('name');
         $serviceNamespace = $this->option('serviceNamespace') ?: config('service-repository.service_namespace');
-        $repositoryNamespace = $this->option('repositoryNamespace') ?: config('service-repository.repository_path');
+        $repositoryNamespace = $this->option('repositoryNamespace') ?: config('service-repository.repository_namespace');
         $generateInterface = $this->option('interface');
 
         $fileGenerator = new FileGenerator();

@@ -49,8 +49,6 @@ The package allows you to define default namespaces and paths in `config/service
 return [
     'service_namespace' => 'App\Services',
     'repository_namespace' => 'App\Repositories',
-    'repository_path' => 'app/Repositories',
-    'service_path' => 'app/Services',
 ];
 ```
 
