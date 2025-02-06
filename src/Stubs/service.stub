@@ -6,7 +6,7 @@ class {{ className }}Service
 {
     protected $repository;
 
-    public function __construct({{ className }}Repository $repository)
+    public function __construct({{ className }}Repository{{Interface}} $repository)
     {
         $this->repository = $repository;
     }

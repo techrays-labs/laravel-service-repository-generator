@@ -3,6 +3,7 @@
 namespace LaravelServiceRepositoryGenerator\Helpers;
 
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 
 class FileGenerator
 {
@@ -13,12 +14,39 @@ class FileGenerator
         $repositoryStub = file_get_contents(__DIR__ . '/../Stubs/repository.stub');
 
         // Replace placeholders
-        $serviceContent = str_replace(['{{ namespace }}', '{{ className }}'], [$serviceNamespace, $name], $serviceStub);
+        $serviceContent = str_replace(['{{ namespace }}', '{{ className }}', '{{Interface}}'], [$serviceNamespace, $name, $generateInterface ? 'Interface' : ''], $serviceStub);
         $repositoryContent = str_replace(['{{ namespace }}', '{{ className }}'], [$repositoryNamespace, $name], $repositoryStub);
 
         // Define file paths
         $serviceFilePath = base_path(str_replace('\\', '/', $serviceNamespace) . "/{$name}Service.php");
         $repositoryFilePath = base_path(str_replace('\\', '/', $repositoryNamespace) . "/{$name}Repository.php");
+
+        // Check if files already exist, and if so, fail the command
+        if (File::exists($serviceFilePath)) {
+            $this->handleFileExistenceError($serviceFilePath);
+        }
+
+        if (File::exists($repositoryFilePath)) {
+            $this->handleFileExistenceError($repositoryFilePath);
+        }
+
+        // Generate interface if needed
+        if ($generateInterface) {
+            $interfaceStub = file_get_contents(__DIR__ . '/../Stubs/repository-interface.stub');
+            $interfaceContent = str_replace(['{{ namespace }}', '{{ className }}'], [$repositoryNamespace, $name], $interfaceStub);
+            $interfacePath = base_path(str_replace('\\', '/', $repositoryNamespace) . "/{$name}RepositoryInterface.php");
+
+            // Check if the interface already exists, and if so, fail the command
+            if (File::exists($interfacePath)) {
+                $this->handleFileExistenceError($interfacePath);
+            }
+
+            // Ensure the directory for the interface exists
+            $this->ensureDirectoryExists($interfacePath);
+
+            // Generate the interface file
+            file_put_contents($interfacePath, $interfaceContent);
+        }
 
         // Ensure directories exist before creating files
         $this->ensureDirectoryExists($serviceFilePath);
@@ -29,19 +57,17 @@ class FileGenerator
 
         // Generate the repository file
         file_put_contents($repositoryFilePath, $repositoryContent);
+    }
 
-        // Generate interface if needed
-        if ($generateInterface) {
-            $interfaceStub = file_get_contents(__DIR__ . '/../Stubs/repository-interface.stub');
-            $interfaceContent = str_replace(['{{ namespace }}', '{{ className }}'], [$repositoryNamespace, $name], $interfaceStub);
-            $interfacePath = base_path(str_replace('\\', '/', $repositoryNamespace) . "/{$name}RepositoryInterface.php");
-
-            // Ensure the directory for the interface exists
-            $this->ensureDirectoryExists($interfacePath);
-
-            // Generate the interface file
-            file_put_contents($interfacePath, $interfaceContent);
-        }
+    /**
+     * Handle file existence error by throwing an exception or logging it.
+     *
+     * @param string $filePath
+     */
+    private function handleFileExistenceError($filePath)
+    {
+        // Throw an exception or abort the process with an error message
+        throw new \Exception("The file {$filePath} already exists. Aborting the generation process to prevent overwriting.");
     }
 
     /**
