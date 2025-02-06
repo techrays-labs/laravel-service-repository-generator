@@ -2,11 +2,14 @@
 
 namespace LaravelServiceRepositoryGenerator\Helpers;
 
+use LaravelServiceRepositoryGenerator\Services\BindingService;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Log;
 
 class FileGenerator
 {
+
+    public function __construct(protected BindingService $bindingService) {}
+
     public function generateFiles($name, $serviceNamespace, $repositoryNamespace, $generateInterface)
     {
         // Define the paths
@@ -46,6 +49,9 @@ class FileGenerator
 
             // Generate the interface file
             file_put_contents($interfacePath, $interfaceContent);
+
+            // Bind the interface to the repository in AppServiceProvider
+            $this->bindingService->bindInterfaceToRepository($name, $repositoryNamespace);
         }
 
         // Ensure directories exist before creating files
