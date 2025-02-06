@@ -93,10 +93,10 @@ domain/
 ### Custom Path for Repository
 
 ```
-php artisan make:service-repository User --repositoryPath="src/Repositories"
+php artisan make:service-repository User --repositoryNamespace="Domain\Repositories"
 ```
 
-This will place the service in `Domain\Services`
+This will place the repository in `Domain\Repositories`
 
 ```
 src/
@@ -122,7 +122,7 @@ app/
 ### Combine Multiple Options
 
 ```
-php artisan make:service-repository User --serviceNamespace="Domain\Services" --repositoryPath="src/Repositories" --interface
+php artisan make:service-repository User --serviceNamespace="Domain\Services" --repositoryNamespace="Domain\Repositories" --interface
 ```
 
 This will generate

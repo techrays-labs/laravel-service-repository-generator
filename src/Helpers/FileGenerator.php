@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\File;
 
 class FileGenerator
 {
-    public function generateFiles($name, $serviceNamespace, $repositoryPath, $generateInterface)
+    public function generateFiles($name, $serviceNamespace, $repositoryNamespace, $generateInterface)
     {
         // Define the paths
         $serviceStub = file_get_contents(__DIR__ . '/../Stubs/service.stub');
@@ -14,11 +14,11 @@ class FileGenerator
 
         // Replace placeholders
         $serviceContent = str_replace(['{{ namespace }}', '{{ className }}'], [$serviceNamespace, $name . 'Service'], $serviceStub);
-        $repositoryContent = str_replace(['{{ namespace }}', '{{ className }}'], [$repositoryPath, $name . 'Repository'], $repositoryStub);
+        $repositoryContent = str_replace(['{{ namespace }}', '{{ className }}'], [$repositoryNamespace, $name . 'Repository'], $repositoryStub);
 
         // Define file paths
         $serviceFilePath = base_path(str_replace('\\', '/', $serviceNamespace) . "/{$name}Service.php");
-        $repositoryFilePath = base_path(str_replace('\\', '/', $repositoryPath) . "/{$name}Repository.php");
+        $repositoryFilePath = base_path(str_replace('\\', '/', $repositoryNamespace) . "/{$name}Repository.php");
 
         // Ensure directories exist before creating files
         $this->ensureDirectoryExists($serviceFilePath);
@@ -33,8 +33,8 @@ class FileGenerator
         // Generate interface if needed
         if ($generateInterface) {
             $interfaceStub = file_get_contents(__DIR__ . '/../Stubs/repository-interface.stub');
-            $interfaceContent = str_replace(['{{ namespace }}', '{{ className }}'], [$repositoryPath, $name . 'RepositoryInterface'], $interfaceStub);
-            $interfacePath = base_path(str_replace('\\', '/', $repositoryPath) . "/{$name}RepositoryInterface.php");
+            $interfaceContent = str_replace(['{{ namespace }}', '{{ className }}'], [$repositoryNamespace, $name . 'RepositoryInterface'], $interfaceStub);
+            $interfacePath = base_path(str_replace('\\', '/', $repositoryNamespace) . "/{$name}RepositoryInterface.php");
 
             // Ensure the directory for the interface exists
             $this->ensureDirectoryExists($interfacePath);
