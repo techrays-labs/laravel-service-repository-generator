@@ -83,7 +83,7 @@ php artisan make:service-repository User --serviceNamespace="Domain\Services"
 This will place the service in `Domain\Services`
 
 ```
-domain/
+Domain/
 ├── Services/
 │   ├── UserService.php
 ```
@@ -97,7 +97,7 @@ php artisan make:service-repository User --repositoryNamespace="Domain\Repositor
 This will place the repository in `Domain\Repositories`
 
 ```
-src/
+Domain/
 ├── Repositories/
 │   ├── UserRepository.php
 ```
@@ -126,10 +126,9 @@ php artisan make:service-repository User --serviceNamespace="Domain\Services" --
 This will generate
 
 ```
-domain/
+Domain/
 ├── Services/
 │   ├── UserService.php
-src/
 ├── Repositories/
 │   ├── UserRepository.php
 │   ├── UserRepositoryInterface.php
