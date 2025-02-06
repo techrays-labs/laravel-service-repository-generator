@@ -1,6 +1,6 @@
 {
     "name": "techrays-labs/laravel-service-repository-generator",
-    "description": "A powerful and flexible Laravel package that simplifies the implementation of the Service-Repository design pattern. Generate Service and Repository classes with ease, customize their namespace and path, and streamline your application's architecture. Perfect for developers who follow clean code principles and want a structured approach to business logic and data handling in Laravel applications.",
+    "description": "A powerful and flexible Laravel package that simplifies the implementation of the Service-Repository design pattern. Generate Service and Repository classes with ease, customize their namespace and path, and streamline your application's architecture.",
     "type": "library",
     "license": "MIT",
     "authors": [

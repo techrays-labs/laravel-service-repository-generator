@@ -20,7 +20,7 @@ A powerful and flexible Laravel package that simplifies the implementation of th
 Install via **Composer**
 
 ```
-composer require laravel-service-repository-generator
+composer require techrays-labs/laravel-service-repository-generator
 ```
 
 Publish the configuration file
