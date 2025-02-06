@@ -4,6 +4,7 @@ namespace LaravelServiceRepositoryGenerator\Helpers;
 
 use LaravelServiceRepositoryGenerator\Services\BindingService;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class FileGenerator
 {
