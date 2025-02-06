@@ -13,8 +13,8 @@ class FileGenerator
         $repositoryStub = file_get_contents(__DIR__ . '/../Stubs/repository.stub');
 
         // Replace placeholders
-        $serviceContent = str_replace(['{{ namespace }}', '{{ className }}'], [$serviceNamespace, $name . 'Service'], $serviceStub);
-        $repositoryContent = str_replace(['{{ namespace }}', '{{ className }}'], [$repositoryNamespace, $name . 'Repository'], $repositoryStub);
+        $serviceContent = str_replace(['{{ namespace }}', '{{ className }}'], [$serviceNamespace, $name], $serviceStub);
+        $repositoryContent = str_replace(['{{ namespace }}', '{{ className }}'], [$repositoryNamespace, $name], $repositoryStub);
 
         // Define file paths
         $serviceFilePath = base_path(str_replace('\\', '/', $serviceNamespace) . "/{$name}Service.php");
@@ -33,7 +33,7 @@ class FileGenerator
         // Generate interface if needed
         if ($generateInterface) {
             $interfaceStub = file_get_contents(__DIR__ . '/../Stubs/repository-interface.stub');
-            $interfaceContent = str_replace(['{{ namespace }}', '{{ className }}'], [$repositoryNamespace, $name . 'RepositoryInterface'], $interfaceStub);
+            $interfaceContent = str_replace(['{{ namespace }}', '{{ className }}'], [$repositoryNamespace, $name], $interfaceStub);
             $interfacePath = base_path(str_replace('\\', '/', $repositoryNamespace) . "/{$name}RepositoryInterface.php");
 
             // Ensure the directory for the interface exists

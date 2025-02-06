@@ -2,7 +2,7 @@
 
 namespace {{ namespace }};
 
-class {{ className }}
+class {{ className }}Repository
 {
     // Repository logic here
 }
